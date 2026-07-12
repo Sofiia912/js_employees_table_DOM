@@ -68,7 +68,6 @@ form.className = 'new-employee-form ';
 labelName.textContent = 'Name: ';
 inputName.name = 'name';
 inputName.type = 'text';
-inputName.required = true;
 inputName.dataset.qa = 'name';
 
 form.append(labelName);
@@ -80,7 +79,6 @@ const inputPosition = document.createElement('input');
 labelPosition.textContent = 'Position: ';
 inputPosition.name = 'position';
 inputPosition.type = 'text';
-inputPosition.required = true;
 inputPosition.dataset.qa = 'position';
 
 form.append(labelPosition);
@@ -91,7 +89,6 @@ const selectOffice = document.createElement('select');
 
 labelOffice.textContent = 'Office: ';
 selectOffice.name = 'office';
-selectOffice.required = true;
 selectOffice.dataset.qa = 'office';
 
 const offices = [
@@ -120,7 +117,6 @@ const inputAge = document.createElement('input');
 labelAge.textContent = 'Age: ';
 inputAge.name = 'age';
 inputAge.type = 'number';
-inputAge.required = true;
 inputAge.dataset.qa = 'age';
 
 form.append(labelAge);
@@ -132,7 +128,6 @@ const inputSalary = document.createElement('input');
 labelSalary.textContent = 'Salary: ';
 inputSalary.name = 'salary';
 inputSalary.type = 'number';
-inputSalary.required = true;
 inputSalary.dataset.qa = 'salary';
 
 form.append(labelSalary);
@@ -141,7 +136,7 @@ labelSalary.append(inputSalary);
 const button = document.createElement('button');
 
 button.type = 'submit';
-button.textContent = 'Save the table';
+button.textContent = 'Save to table';
 
 form.append(button);
 document.body.append(form);
@@ -177,10 +172,28 @@ form.addEventListener('submit', (e) => {
   e.preventDefault();
 
   const nameVal = inputName.value.trim();
-  // const positionVal = inputPosition.value.trim();
-  // const officeVal = selectOffice.value;
+  const positionVal = inputPosition.value.trim();
+  const officeVal = selectOffice.value;
   const ageVal = Number(inputAge.value);
-  // const salaryVal = Number(inputSalary.value);
+  const salaryVal = Number(inputSalary.value);
+
+  if (
+    !nameVal ||
+    !positionVal ||
+    !officeVal ||
+    isNaN(ageVal) ||
+    isNaN(salaryVal)
+  ) {
+    pushNotification(
+      10,
+      10,
+      'Validation error',
+      'All fields are required.',
+      'error',
+    );
+
+    return;
+  }
 
   if (nameVal.length < 4) {
     pushNotification(
@@ -204,6 +217,28 @@ form.addEventListener('submit', (e) => {
     );
 
     return;
+  }
+
+  if (tbody) {
+    const newRow = document.createElement('tr');
+
+    const formattedSalary = '$' + Number(salaryVal).toLocaleString('en-US');
+
+    const cells = [
+      nameVal,
+      positionVal,
+      officeVal,
+      ageVal,
+      `${formattedSalary}`,
+    ];
+
+    cells.forEach((text) => {
+      const td = document.createElement('td');
+
+      td.textContent = text;
+      newRow.append(td);
+    });
+    tbody.append(newRow);
   }
 
   pushNotification(
