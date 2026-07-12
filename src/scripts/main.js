@@ -251,3 +251,44 @@ form.addEventListener('submit', (e) => {
 
   form.reset();
 });
+
+let activateInput = null;
+
+tbody.addEventListener('dblclick', (e) => {
+  const cell = e.target.closest('td');
+
+  if (!cell) {
+    return;
+  }
+
+  if (activateInput) {
+    activateInput.blur();
+  }
+
+  const inputEdit = document.createElement('input');
+  const textNow = cell.textContent;
+
+  inputEdit.className = 'cell-input';
+  inputEdit.value = textNow;
+  cell.textContent = '';
+  cell.append(inputEdit);
+  inputEdit.focus();
+
+  activateInput = inputEdit;
+
+  function save() {
+    const newVal = inputEdit.value.trim();
+
+    cell.textContent = newVal || textNow;
+
+    activateInput = null;
+  }
+
+  inputEdit.addEventListener('blur', save);
+
+  inputEdit.addEventListener('keydown', (keyEvent) => {
+    if (keyEvent.key === 'Enter') {
+      inputEdit.blur();
+    }
+  });
+});
