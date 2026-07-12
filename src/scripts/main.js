@@ -146,7 +146,73 @@ button.textContent = 'Save the table';
 form.append(button);
 document.body.append(form);
 
+const pushNotification = (posTop, posRight, title, description, type) => {
+  const notification = document.createElement('div');
+
+  notification.classList.add('notification', type);
+  notification.dataset.qa = 'notification';
+
+  notification.style.top = `${posTop}px`;
+  notification.style.right = `${posRight}px`;
+
+  const titleElement = document.createElement('h2');
+
+  titleElement.className = 'title';
+  titleElement.textContent = title;
+  notification.appendChild(titleElement);
+
+  const descriptionElement = document.createElement('p');
+
+  descriptionElement.textContent = description;
+  notification.appendChild(descriptionElement);
+
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.style.display = 'none';
+  }, 2000);
+};
+
 form.addEventListener('submit', (e) => {
   e.preventDefault();
 
+  const nameVal = inputName.value.trim();
+  // const positionVal = inputPosition.value.trim();
+  // const officeVal = selectOffice.value;
+  const ageVal = Number(inputAge.value);
+  // const salaryVal = Number(inputSalary.value);
+
+  if (nameVal.length < 4) {
+    pushNotification(
+      10,
+      10,
+      'Validation error',
+      'Name must have at least 4 letters.',
+      'error',
+    );
+
+    return;
+  }
+
+  if (ageVal < 18 || ageVal > 90) {
+    pushNotification(
+      10,
+      10,
+      'Validation error',
+      'Age must be between 18 and 90.',
+      'error',
+    );
+
+    return;
+  }
+
+  pushNotification(
+    10,
+    10,
+    'Success',
+    'New employee successfully added.',
+    'success',
+  );
+
+  form.reset();
 });
