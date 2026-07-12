@@ -3,7 +3,6 @@
 const tbody = document.querySelector('tbody');
 const th = document.querySelector('thead tr');
 
-// When the user clicks on a row, it should become selected
 tbody.addEventListener('click', (e) => {
   const rowClicked = e.target.closest('tr');
 
@@ -57,4 +56,97 @@ th.addEventListener('click', (e) => {
   });
 
   tbody.append(...rows);
+});
+
+const form = document.createElement('form');
+
+const labelName = document.createElement('label');
+const inputName = document.createElement('input');
+
+form.className = 'new-employee-form ';
+
+labelName.textContent = 'Name: ';
+inputName.name = 'name';
+inputName.type = 'text';
+inputName.required = true;
+inputName.dataset.qa = 'name';
+
+form.append(labelName);
+labelName.append(inputName);
+
+const labelPosition = document.createElement('label');
+const inputPosition = document.createElement('input');
+
+labelPosition.textContent = 'Position: ';
+inputPosition.name = 'position';
+inputPosition.type = 'text';
+inputPosition.required = true;
+inputPosition.dataset.qa = 'position';
+
+form.append(labelPosition);
+labelPosition.append(inputPosition);
+
+const labelOffice = document.createElement('label');
+const selectOffice = document.createElement('select');
+
+labelOffice.textContent = 'Office: ';
+selectOffice.name = 'office';
+selectOffice.required = true;
+selectOffice.dataset.qa = 'office';
+
+const offices = [
+  'Tokyo',
+  'Singapore',
+  'London',
+  'New York',
+  'Edinburgh',
+  'San Francisco',
+];
+
+offices.forEach((office) => {
+  const option = document.createElement('option');
+
+  option.value = office;
+  option.textContent = office;
+  selectOffice.append(option);
+});
+
+form.append(labelOffice);
+labelOffice.append(selectOffice);
+
+const labelAge = document.createElement('label');
+const inputAge = document.createElement('input');
+
+labelAge.textContent = 'Age: ';
+inputAge.name = 'age';
+inputAge.type = 'number';
+inputAge.required = true;
+inputAge.dataset.qa = 'age';
+
+form.append(labelAge);
+labelAge.append(inputAge);
+
+const labelSalary = document.createElement('label');
+const inputSalary = document.createElement('input');
+
+labelSalary.textContent = 'Salary: ';
+inputSalary.name = 'salary';
+inputSalary.type = 'number';
+inputSalary.required = true;
+inputSalary.dataset.qa = 'salary';
+
+form.append(labelSalary);
+labelSalary.append(inputSalary);
+
+const button = document.createElement('button');
+
+button.type = 'submit';
+button.textContent = 'Save the table';
+
+form.append(button);
+document.body.append(form);
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+
 });
